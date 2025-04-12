@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>HAMZA MEHMET GÖKÇE - FEN BİLİMLERİ PROJE ÖDEVİ</title>
+  <style>
+    /* Genel Stil */
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #fffefe;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Başlama Ekranı */
+    .start-screen {
+      background: linear-gradient(135deg, #ffffff, #5a5b5b);
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      height: 100vh; /* Ekranın tamamını kaplaması için */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* Başlama ekranındaki yazıyı daha büyük yapmak ve ortalamak */
+    .start-screen h2 {
+      font-size: 72px; /* Yazıyı daha da büyüttük */
+      font-weight: bold; /* Kalın yazı */
+      margin-bottom: 40px; /* Alt boşluk artırıldı */
+      color: #0e0e0e; /* Yazının rengi */
+      line-height: 1.2; /* Satır aralığını biraz açtık */
+    }
+
+    .start-screen button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .start-screen button:hover {
+      background-color: #2563eb;
+      transform: scale(1.05);
+    }
+
+    /* Test Kutusu */
+    .quiz-container {
+      background: linear-gradient(135deg, #979595, #2c2c2c);
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 1200px;
+      box-sizing: border-box;
+      text-align: center;
+      height: 90%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: background-color 0.5s ease;
+      overflow: hidden;
+      display: none; /* Başlangıçta test kutusunu gizledik */
+    }
+
+    .question {
+      font-size: 50px;
+      font-weight: bold;
+      margin-bottom: 40px;
+      color: #333;
+      line-height: 1.4;
+      padding: 20px;
+    }
+
+    .option {
+      margin: 15px 0;
+    }
+
+    label {
+      font-size: 40px;
+      cursor: pointer;
+      display: block;
+      padding: 15px;
+      background-color: #f7f7f7;
+      border-radius: 8px;
+      transition: background-color 0.3s, transform 0.2s;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    label:hover {
+      background-color: #3b82f6;
+      color: rgb(246, 243, 243);
+      transform: scale(1.05);
+    }
+
+    input[type="radio"] {
+      display: none;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 20px;
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      margin-top: 30px;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+      transform: scale(1.05);
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    h2 {
+      font-size: 28px;
+      color: #333;
+    }
+
+    .answers {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .correct {
+      color: green;
+    }
+
+    .incorrect {
+      color: #6c1e1e; /* Bordo Renk */
+    }
+
+    @media (max-width: 8000px) {
+      .quiz-container {
+        padding: 20px;
+        width: 90%;
+      }
+
+      .question {
+        font-size: 30px;
+      }
+
+      label {
+        font-size: 18px;
+      }
+
+      button {
+        font-size: 18px;
+        padding: 12px 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <audio id="background-music" autoplay loop>
+    <source src="muzik.mp3" type="audio/mpeg">
+    Tarayıcınız ses etiketini desteklemiyor.
+  </audio>
+  
+
+<!-- Başlama Ekranı -->
+<div class="start-screen" id="startScreen">
+  <h2>FEN BİLİMLERİ PROJE ÖDEVİ</h2>
+  <h3>HAMZA MEHMET GÖKÇE</h3>
+    <h3>8/B - 224</h3>
+  <button onclick="startQuiz()">Başla</button>
+</div>
+
+<!-- Quiz Ekranı -->
+<div class="quiz-container" id="quizContainer">
+  <div id="quiz">
+    <div class="question" id="question">Soru geliyor...</div>
+    <div class="option"><input type="radio" name="answer" value="a" id="a"><label for="a" id="a_text">Seçenek A</label></div>
+    <div class="option"><input type="radio" name="answer" value="b" id="b"><label for="b" id="b_text">Seçenek B</label></div>
+    <div class="option"><input type="radio" name="answer" value="c" id="c"><label for="c" id="c_text">Seçenek C</label></div>
+    <div class="option"><input type="radio" name="answer" value="d" id="d"><label for="d" id="d_text">Seçenek D</label></div>
+    <button onclick="submitAnswer()">Cevapla</button>
+    <div id="result"></div>
+    <div class="answers" id="answers"></div>
+  </div>
+</div>
+
+<script>
+  const quizData = [
+    {
+      question: "DNA'nın yapı birimi nedir?",
+      a: "Hücre",
+      b: "Organik baz",
+      c: "Nükleotid",
+      d: "Gen",
+      correct: "c"
+    },
+    {
+      question: "Bir madde katı halden sıvı hale geçerken hangi olay gerçekleşir?",
+      a: "Donma",
+      b: "Buharlaşma",
+      c: "Yoğuşma",
+      d: "Erime",
+      correct: "d"
+    },
+    {
+      question: "Desteğin ortada olduğu bir kaldıraçta yükün desteğe uzaklığı 2m, kuvvetin desteğe uzaklığı 4m'dir. Bu örnek ne ile açıklanır",
+      a: "Kuvvetten kazanç vardır",
+      b: "Yoldan kazanç vardır",
+      c: "Kuvvetin yönü değişmemiştir",
+      d: "Kuvvetten kayıp vardır",
+      correct: "a"
+    },
+    {
+      question: "Buradaki maddelerden kaç tanesi katı basıncını artırmaya yöneliktir: I. Taban alanını artırmak II. Ağırlığı artırmak III. Cismi ortadan ikiye kesmek",
+      a: "0",
+      b: "1",
+      c: "2",
+      d: "3",
+      correct: "b"
+    },
+    {
+      question: "21 Aralık tarihinde yengeç dönencesinde bulunan Asım ile ilgili hangisi söylenebilir",
+      a: "En uzun gündüzü yaşar",
+      b: "Öğle vakti gölge boyu neredeyse hiç olmaz",
+      c: "Eğer Asım Türkiye'ye geziye gelirse yaşadığı mevsim değişmez",
+      d: "Güneşden korunmak için güneş kremi kullanması gerekebilir",
+      correct: "c"
+    },
+    {
+      question: "Bir öğrenci, ısıtıcı kullanarak içinde sadece saf su bulunan bir kabı ısıtmaya başlıyor. Suyun sıcaklığı 100 °C'ye ulaştığında, ısıtıcı aynı şekilde çalışmaya devam ediyor. Öğrenci, sıcaklığın sabit kaldığını ve bu esnada suyun bir kısmının buharlaştığını gözlemliyor.",
+      a: "Sıvı halden gaz hale geçiş gözlemlenmektedir.",
+      b: "Sıcaklık sabit kaldığı esnasında suya ısı verilmeye devam edilmiştir.",
+      c: "Suyun sıcaklığı, hal değişimi boyunca sabit kalmıştır.",
+      d: "Isı verilmeye devam edildiği sürece suyun sıcaklığı artmaya devam eder.",
+      correct: "d"
+    },
+    {
+      question: "Bezelyelerde sarı tohum özelliği baskın, yeşil tohum özelliği çekiniktir. Heterozigot sarı tohumlu bir bezelye ile homozigot çekinik yeşil tohumlu bir bezelye çaprazlanıyor. Bu çaprazlama sonucunda oluşan yavruların genotip ve fenotip oranı aşağıdakilerden hangisidir?",
+      a: "Genotip: %100 Ss – Fenotip: %100 sarı",
+      b: "Genotip: %50 Ss, %50 ss – Fenotip: %50 sarı, %50 yeşil",
+      c: "Genotip: %75 Ss, %25 ss – Fenotip: %75 sarı, %25 yeşil",
+      d: "Genotip: %25 SS, %50 Ss, %25 ss – Fenotip: %75 sarı, %25 yeşil",
+      correct: "b"
+    },
+    {
+      question: "Kütleleri eşit fakat taban alanları farklı olan A ve B cisimleri, yatay ve düzgün bir zemine konuluyor.A cisminin taban alanı, B cisminin taban alanının yarısı kadardır.Bu durumda zemine uygulanan basınçlar için aşağıdakilerden hangisi doğrudur? nedir?",
+      a: "A ve B cisimlerinin basınçları eşittir.",
+      b: "A cisminin basıncı, B’nin basıncından küçüktür.",
+      c: "A cisminin basıncı, B’nin basıncının 2 katıdır.",
+      d: "B cisminin basıncı, A’nın basıncının 4 katıdır.",
+      correct: "c"
+    },
+    {
+      question: "Bir öğrenci, aşağıdaki iki farklı düzeneği kuruyor: Düzenek 1: Sabit makara ile 20 N’luk bir yük yukarı kaldırılıyor. Düzenek 2: Hareketli makara ile aynı yük yukarı kaldırılıyor. Öğrenci, bu iki düzenekte uygulanan kuvvetleri karşılaştırmak istiyor. Bu durumda aşağıdakilerden hangisi doğrudur?",
+      a: "Hareketli makarada uygulanan kuvvet, sabit makaraya göre daha azdır.",
+      b: "Sabit makarada uygulanan kuvvet, hareketli makaraya göre daha azdır.",
+      c: "Her iki düzenekte de uygulanan kuvvet eşittir.",
+      d: "Hareketli makarada yükü kaldırmak için daha fazla kuvvet gerekir.",
+      correct: "a"
+    },
+    {
+      question: "Eksen eğikliği olmasaydı, aşağıdakilerden hangisi olurdu?",
+      a: "Yıl boyunca mevsimler yaşanmazdı",
+      b: "Yıl boyunca mevsimler yaşanırdı",
+      c: "Gece ve gündüz süreleri hep değişiklik gösterirdi",
+      d: "Sıcaklık farkı çok fazla olurdu",
+      correct: "a"
+    },
+  ];
+
+  let currentQuestion = 0;
+  let score = 0;
+  let answersHistory = [];
+
+  const questionEl = document.getElementById("question");
+  const a_text = document.getElementById("a_text");
+  const b_text = document.getElementById("b_text");
+  const c_text = document.getElementById("c_text");
+  const d_text = document.getElementById("d_text");
+  const resultEl = document.getElementById("result");
+  const answersEl = document.getElementById("answers");
+  const startScreenEl = document.getElementById("startScreen");
+  const quizContainerEl = document.getElementById("quizContainer");
+
+  function startQuiz() {
+    // Başlangıç ekranını gizle
+    startScreenEl.style.display = "none";
+
+    // Test kutusunu göster
+    quizContainerEl.style.display = "block";
+    
+    loadQuiz();
+  }
+
+  function loadQuiz() {
+    const current = quizData[currentQuestion];
+    questionEl.textContent = current.question;
+    a_text.textContent = current.a;
+    b_text.textContent = current.b;
+    c_text.textContent = current.c;
+    d_text.textContent = current.d;
+    document.querySelectorAll('input[name="answer"]').forEach(el => el.checked = false);
+    resultEl.textContent = '';
+    answersEl.innerHTML = '';
+  }
+
+  function getSelected() {
+    let answer;
+    document.querySelectorAll('input[name="answer"]').forEach(el => {
+      if(el.checked) answer = el.value;
+    });
+    return answer;
+  }
+
+  function submitAnswer() {
+  const answer = getSelected();
+  if (answer) {
+    const current = quizData[currentQuestion];
+    const isCorrect = answer === current.correct;
+
+    // Kullanıcının cevabını ve doğru cevabı kaydet
+    answersHistory.push({
+      question: current.question,
+      selected: answer,
+      correct: current.correct,
+      isCorrect: isCorrect
+    });
+
+    if (isCorrect) {
+      score++;
+      resultEl.textContent = "Doğru!";
+      // Ekranı koyu yeşil yap
+      document.body.style.backgroundColor = "#006400"; // Koyu yeşil
+    } else {
+      resultEl.textContent = "Yanlış! Doğru cevap: " + current[current.correct];
+      // Ekranı bordo yap
+      document.body.style.backgroundColor = "#800000"; // Bordo
+    }
+
+    currentQuestion++;
+
+    setTimeout(() => {
+      if (currentQuestion < quizData.length) {
+        loadQuiz();
+      } else {
+        showResults();
+      }
+      // 1 saniye sonra arka plan rengini tekrar beyaz yap
+      document.body.style.backgroundColor = "#f0f4f7";
+    }, 1000); // 1 saniye bekle ve sonraki soruya geç
+  } else {
+    resultEl.textContent = "Lütfen bir seçenek seçin.";
+  }
+}
+
+
+  function showResults() {
+    let resultsHTML = `<h2>Test tamamlandı!</h2><p>Skorun: ${score} / ${quizData.length}</p>`;
+
+    resultsHTML += "<h3>Yanıtlarınız:</h3><ul>";
+
+    answersHistory.forEach(answer => {
+      const resultClass = answer.isCorrect ? "correct" : "incorrect";
+      resultsHTML += `
+        <li class="${resultClass}">
+          Soru: ${answer.question}<br>
+          Cevap: ${answer.selected === answer.correct ? "Doğru" : "Yanlış"} - 
+          Doğru Cevap: ${answer.correct}
+        </li>
+      `;
+    });
+
+    resultsHTML += "</ul><button onclick=\"location.reload()\">Yeniden Başla</button>";
+
+    document.getElementById("quiz").innerHTML = resultsHTML;
+  }
+</script>
+
+</body>
+</html>
