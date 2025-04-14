@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <meta charset="UTF-8">
   <title>HAMZA MEHMET GÖKÇE | FEN BİLİMLERİ PROJE ÖDEVİ</title>
   <style>
@@ -492,7 +493,7 @@
 }
 
 
-  function showResults() {
+function showResults() {
     let resultsHTML = `<h2>Test tamamlandı!</h2><p>Skorun: ${score} / ${quizData.length}</p>`;
 
     resultsHTML += "<h3>Yanıtlarınız:</h3><ul>";
@@ -511,7 +512,15 @@
     resultsHTML += "</ul><button onclick=\"location.reload()\">Yeniden Başla</button>";
 
     document.getElementById("quiz").innerHTML = resultsHTML;
-  }
+
+    // Konfeti Efekti Başlatma
+    confetti({
+      particleCount: 2000,
+      spread: 350,
+      origin: { x: 0.5, y: 0.5 }
+    });
+}
+
 </script>
 
 </body>
